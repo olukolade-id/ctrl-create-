@@ -544,7 +544,7 @@ em {
 .project-card:nth-child(4) {
   margin-top: 130px;
 }
-.project-art img {
+.project-art:not(.project-art--uploaded) img {
   filter: saturate(0.7) contrast(1.1);
   object-fit: cover;
   opacity: 0.35;
@@ -552,8 +552,15 @@ em {
     opacity 0.5s,
     transform 0.5s;
 }
-.project-card:hover .project-art img {
+.project-card:hover .project-art:not(.project-art--uploaded) img {
   opacity: 0.5;
+  transform: scale(1.05);
+}
+.project-art--uploaded img {
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.project-card:hover .project-art--uploaded img {
   transform: scale(1.05);
 }
 .project-art .art-object {
@@ -925,6 +932,20 @@ em {
   position: absolute;
   transition: transform 0.2s ease-out;
 }
+.playground__grid--pulse {
+  animation: playground-pulse 1.6s ease-in-out infinite alternate;
+}
+.playground__grid--invert {
+  filter: invert(1) hue-rotate(125deg);
+}
+.playground__grid--spin {
+  background-size: 70px 70px;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes playground-pulse {
+  from { background-size: 48px 48px; opacity: 0.45; }
+  to { background-size: 105px 105px; opacity: 1; }
+}
 .playground__copy {
   position: relative;
   z-index: 1;
@@ -954,6 +975,10 @@ em {
     11px "Courier New",
     monospace;
   padding: 9px 15px;
+}
+.tool-row {
+  flex-wrap: wrap;
+  max-width: min(70vw, 620px);
 }
 .tool-row button.is-active,
 .tool-row button:hover {

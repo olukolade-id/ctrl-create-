@@ -68,10 +68,10 @@ export function WorkGrid() {
             data-cursor="hover"
             key={project.id}
           >
-            <div className="project-art">
-              {mediaBySlug[project.slug] || project.media?.thumbnail ? (
+            <div className={`project-art ${mediaBySlug[project.slug] ? "project-art--uploaded" : ""}`}>
+              {mediaBySlug[project.slug] ? (
                 <Image
-                  src={mediaBySlug[project.slug] || project.media?.thumbnail || ""}
+                  src={mediaBySlug[project.slug]}
                   alt={`${project.title} project preview`}
                   fill
                   sizes="(max-width: 700px) 90vw, 45vw"

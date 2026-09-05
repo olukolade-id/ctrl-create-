@@ -8,7 +8,7 @@ import { ContactForm } from "@/components/contact-form";
 import { ArchiveGallery } from "@/components/archive-gallery";
 import { ProofSection } from "@/components/proof-section";
 
-type ToolMode = "MOVE" | "WARP" | "RESET";
+type ToolMode = "MOVE" | "WARP" | "PULSE" | "SPIN" | "INVERT" | "RESET";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -47,6 +47,9 @@ export default function Page() {
   // three buttons are actually distinct behaviors, not just labels.
   const playgroundTransform = useMemo(() => {
     if (activeTool === "RESET") return "translate(0px, 0px) scale(1) rotate(0deg)";
+    if (activeTool === "SPIN") {
+      return `translate(${offsetX / 5}px, ${offsetY / 5}px) scale(1.08) rotate(${offsetX * 1.2}deg)`;
+    }
     if (activeTool === "WARP") {
       const scale = 1 + Math.min(Math.abs(offsetX), 40) / 120;
       return `translate(${offsetX / 3}px, ${offsetY / 3}px) scale(${scale}) rotate(${offsetX / 6}deg)`;
@@ -192,10 +195,6 @@ export default function Page() {
       <motion.section
         className="work-section section-pad"
         id="work"
-        initial={prefersReducedMotion ? undefined : "hidden"}
-        whileInView={prefersReducedMotion ? undefined : "show"}
-        viewport={{ once: true, amount: 0.2 }}
-        variants={fadeUp}
       >
         <div className="section-heading">
           <span className="section-index">(03)</span>
@@ -275,7 +274,7 @@ export default function Page() {
         </div>
         <div className="playground">
           <div
-            className="playground__grid"
+            className={`playground__grid playground__grid--${activeTool.toLowerCase()}`}
             style={{
               transform: playgroundTransform,
               transition: activeTool === "RESET" ? "transform 0.4s ease-out" : undefined,
@@ -290,7 +289,7 @@ export default function Page() {
             </h2>
           </div>
           <div className="tool-row" role="group" aria-label="Playground tools">
-            {(["MOVE", "WARP", "RESET"] as ToolMode[]).map((tool) => (
+            {(["MOVE", "WARP", "PULSE", "SPIN", "INVERT", "RESET"] as ToolMode[]).map((tool) => (
               <button
                 className={activeTool === tool ? "is-active" : ""}
                 key={tool}

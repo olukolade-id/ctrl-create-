@@ -1,4 +1,4 @@
-import { readdir } from "node:fs/promises";
+import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { NextResponse } from "next/server";
 import { projects } from "@/lib/projects";
@@ -16,6 +16,8 @@ export async function GET() {
       for (const file of files) {
         const extension = path.extname(file.name).toLowerCase();
         if (!file.isFile() || !imageExtensions.has(extension)) continue;
+        const fileStats = await stat(path.join(folder, file.name));
+        if (fileStats.size === 0) continue;
         items.push({
           image: `/work/${project.slug}/${encodeURIComponent(file.name)}`,
           title: project.title,
